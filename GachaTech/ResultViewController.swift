@@ -25,8 +25,7 @@ class ResultViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         //0から9の間でランダムにInt型の数字を発生させる
-        let number = Int(rand() % 9)
-//        let number = Int(arc4random()) % 9
+        let number = Int(rand() % 10)
         
         //monsterArray配列に画像を10枚追加（保存）する
         monsterArray = [UIImage(named: "monster001.png")!,
@@ -52,6 +51,7 @@ class ResultViewController: UIViewController {
         } else {
             haikeiImageView.image = UIImage(named: "bg_blue.png")
         }
+            
     }
     
     override func viewDidAppear(animated: Bool) {
