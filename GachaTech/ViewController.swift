@@ -19,6 +19,11 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func gacha() {
+        //SegueのIdentifierが"result"のViewへ画面遷移する
+        self.performSegueWithIdentifier("result", sender: nil)
+    }
 
 
 }
