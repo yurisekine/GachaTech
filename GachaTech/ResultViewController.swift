@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ResultViewController: UIViewController {
     
@@ -16,13 +17,30 @@ class ResultViewController: UIViewController {
     //一番表面のモンスター画像を表示するためのUIImageView
     @IBOutlet var monsterImageView: UIImageView!
     
+    @IBOutlet var nameLabel: UILabel!
+    
     //モンスター画像を保存しておくUIImageの型の配列
     var monsterArray: [UIImage]!
+    
+    //モンスターの名前を保存
+    var nameArray: [AnyObject] = []
+    
+    var audioPlayer: AVAudioPlayer!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        let soundFilePath = NSBundle.mainBundle().pathForResource("shine", ofType: "wav")!
+        let fileURL = NSURL(fileURLWithPath: String(soundFilePath))
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: fileURL)
+        } catch {
+            print("音楽ファイルが読み込めませんでした")
+        }
+        audioPlayer.play()
         
         //0から9の間でランダムにInt型の数字を発生させる
         let number = Int(rand() % 10)
@@ -40,8 +58,14 @@ class ResultViewController: UIViewController {
                 UIImage(named: "monster010.png")!
         ]
         
+        //nameArray配列に名前を追加
+        nameArray = ["にゃん吉","フィシュ子", "へんないきもの", "エンジェルポイズン", "青の剣士", "レッドドラゴン", "影の支配者", "ゴールディン", "四手観音", "ゴールドスラッシュファイター"]
+        
         //monsterArrayの中のnumber番目を表示させる（ランダムに表示させる）
         monsterImageView.image = monsterArray[number]
+        
+        //nameArrayのnumber番目を表示
+        nameLabel.text = nameArray[number] as! String
         
         //numberの数字により背景画像を切り替える
         if number == 9 {
@@ -77,6 +101,18 @@ class ResultViewController: UIViewController {
         
         //どのレイヤーをアニメーションにさせるか指定する
         haikeiImageView.layer.addAnimation(animation, forKey: nil)
+        
+        
+        let monsterAnimation = CABasicAnimation(keyPath: "transform") //
+        monsterAnimation.fromValue = NSNumber(double: -(M_PI / 3))
+        monsterAnimation.toValue = NSNumber(double: M_PI / 3)
+        monsterAnimation.valueFunction = CAValueFunction(name: kCAValueFunctionRotateZ)
+        monsterAnimation.duration = 10
+        monsterAnimation.repeatCount = 1
+        
+        monsterImageView.layer.addAnimation(monsterAnimation, forKey: nil)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
